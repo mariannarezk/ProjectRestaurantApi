@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ProjectRestaurantApi.Models
 {
-    public class EnsembleOptionalRlt
+    public class EnsembleOptionalRlt //btw ensemble and addones
+
     {
         [Key]
         public int RltId { get; set; }

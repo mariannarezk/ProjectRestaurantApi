@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProjectRestaurantApi.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,12 +13,14 @@ namespace ProjectRestaurantApi.Controllers
     [ApiController]
     public class RestaurantController : ControllerBase
     {
+        private UserManager<ApplicationUser> _userManager;
         private readonly DatabaseContext _context;
         private readonly ILogger<RestaurantController> _logger;
-        public RestaurantController(DatabaseContext context, ILogger<RestaurantController> logger)
+        public RestaurantController(DatabaseContext context, ILogger<RestaurantController> logger, UserManager<ApplicationUser> userManager)
         {
             this._logger = logger;
             this._context = context;
+            this._userManager = userManager;
         }
         [HttpGet]
         [Route("Get")]
@@ -29,10 +32,21 @@ namespace ProjectRestaurantApi.Controllers
         }
         [HttpPost]
         [Route("Create")]
-        public IActionResult CreateRest(Restaurant r)
+        public IActionResult CreateRest(RestaurantManagerBindingModel r)
         {
-
-            _context.Add(r);
+            Restaurant rest = new Restaurant();
+            rest.RestaurantLogo = r.RestaurantLogo;
+            rest.RestaurantName = r.RestaurantName;
+            rest.RestNotes = r.RestNotes;
+            rest.RestPhoneNumber = r.RestPhoneNumber;
+            rest.RestaurantActive = 0;
+            _context.Add(rest);
+            _context.SaveChanges();
+            ApplicationUser a = _context.ApplicationUsers.Where(c => c.Id == r.userid).FirstOrDefault();
+            a.RestaurantId = rest.RestaurantId;
+            
+            
+            _context.Update(a);
             _context.SaveChanges();
             //return RedirectToAction(nameof(GetM));
             return Ok(r);

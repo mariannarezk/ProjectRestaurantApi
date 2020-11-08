@@ -41,5 +41,6 @@ namespace ProjectRestaurantApi.Models
         public virtual ICollection<PackageItem> PackageItem { get; set; }
 
         public int NumberAddOns { get; set; }
+    
     }
 }

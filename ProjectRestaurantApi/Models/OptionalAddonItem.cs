@@ -13,6 +13,8 @@ namespace ProjectRestaurantApi.Models
      
         public int EnsembleId { get; set; }
         public int ItemId { get; set; }
+
+        //public int minCount ... public int maxCount 
  
     }
 }

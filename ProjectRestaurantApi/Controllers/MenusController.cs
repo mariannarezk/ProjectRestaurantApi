@@ -18,9 +18,10 @@ namespace ProjectRestaurantApi.Controllers
             this._context = context;
         }
         [HttpGet]
-        public IActionResult GetM()
+        [Route("[action]")]
+        public IActionResult GetM(int branchid)
         {
-            var menus = _context.Menus.ToList();
+            var menus = _context.Menus.Where(b=>b.BranchId == branchid).ToList();
             // var menus = "ok";
             return Ok(menus);
         }

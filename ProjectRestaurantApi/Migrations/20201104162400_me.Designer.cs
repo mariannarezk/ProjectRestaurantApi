@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectRestaurantApi.Models;
 
 namespace ProjectRestaurantApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20201104162400_me")]
+    partial class me
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -486,6 +488,15 @@ namespace ProjectRestaurantApi.Migrations
                     b.Property<int?>("CategId")
                         .HasColumnType("int");
 
+                    b.Property<int>("CountOfChoosedAddOnes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EnsembleAddOnsEnsembleAddonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EnsembleAddonId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ItemCalories")
                         .HasColumnType("nvarchar(max)");
 
@@ -528,6 +539,8 @@ namespace ProjectRestaurantApi.Migrations
                     b.HasKey("ItemId");
 
                     b.HasIndex("CategId");
+
+                    b.HasIndex("EnsembleAddOnsEnsembleAddonId");
 
                     b.HasIndex("Menu_Id1");
 
@@ -725,9 +738,6 @@ namespace ProjectRestaurantApi.Migrations
                     b.Property<string>("RestPhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RestaurantActive")
-                        .HasColumnType("int");
-
                     b.Property<string>("RestaurantLogo")
                         .HasColumnType("nvarchar(max)");
 
@@ -830,10 +840,11 @@ namespace ProjectRestaurantApi.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RestaurantId")
-                        .HasColumnType("int");
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("RestaurantId");
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -925,6 +936,10 @@ namespace ProjectRestaurantApi.Migrations
                         .WithMany("Items")
                         .HasForeignKey("CategId");
 
+                    b.HasOne("ProjectRestaurantApi.Models.EnsembleAddOns", "EnsembleAddOns")
+                        .WithMany()
+                        .HasForeignKey("EnsembleAddOnsEnsembleAddonId");
+
                     b.HasOne("ProjectRestaurantApi.Models.Menu", "Menu")
                         .WithMany()
                         .HasForeignKey("Menu_Id1");
@@ -992,13 +1007,6 @@ namespace ProjectRestaurantApi.Migrations
                     b.HasOne("ProjectRestaurantApi.Models.RestaurantBranch", "Branch")
                         .WithMany("Zones")
                         .HasForeignKey("BranchId");
-                });
-
-            modelBuilder.Entity("ProjectRestaurantApi.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("ProjectRestaurantApi.Models.Restaurant", "Restaurant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId");
                 });
 #pragma warning restore 612, 618
         }

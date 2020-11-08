@@ -10,8 +10,8 @@ namespace ProjectRestaurantApi.Models
     {
         [Key]
         public int EnsembleAddonId { get; set; }
-        public int MinCount { get; set; }
-        public int MaxCount { get; set; }
+        public int MinCount { get; set; } //not necessary
+        public int MaxCount { get; set; } //not necessary
         public int MenuId { get; set; }
         public string EnsembleName { get; set; }
     }

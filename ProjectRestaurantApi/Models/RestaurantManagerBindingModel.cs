@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjectRestaurantApi.Models
 {
-    public partial class Restaurant
+    public class RestaurantManagerBindingModel
     {
-        public Restaurant()
-        {
-            RestaurantBranch = new HashSet<RestaurantBranch>();
-        }
-        [Key]
         public int RestaurantId { get; set; }
         public string RestaurantName { get; set; }
         public string RestaurantLogo { get; set; }
         public string? RestPhoneNumber { get; set; }
         public string RestNotes { get; set; }
         public int RestaurantActive { get; set; }
-
-        public virtual ICollection<RestaurantBranch> RestaurantBranch { get; set; }
+        public string userid { get; set; }
+        public string managerfullname { get; set; }
+        public string manageremail { get; set; }
+        public int active { get; set; }
     }
 }

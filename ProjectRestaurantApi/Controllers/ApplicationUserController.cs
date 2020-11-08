@@ -54,7 +54,7 @@ namespace ProjectRestaurantApi.Controllers
                 {
                     await _userManager.AddClaimAsync(applicationUser, new System.Security.Claims.Claim("ClientOnly", "Client"));
                     //await _userManager.AddClaimAsync(applicationUser, new System.Security.Claims.Claim("First Name", applicationUser.FullName));
-                    //await _userManager.AddClaimAsync(applicationUser, new System.Security.Claims.Claim(ClaimTypes.NameIdentifier, applicationUser.Id));
+                    await _userManager.AddClaimAsync(applicationUser, new System.Security.Claims.Claim(ClaimTypes.NameIdentifier, applicationUser.Id));
                     
                     return Ok(result);
                     
@@ -69,7 +69,7 @@ namespace ProjectRestaurantApi.Controllers
         }
 
 
-       
+        
 
         [HttpPost]
         [Route("Register")]
@@ -92,12 +92,16 @@ namespace ProjectRestaurantApi.Controllers
                     if (model.Role=="Waiter")
                     {
                         await _userManager.AddClaimAsync(applicationUser, new System.Security.Claims.Claim("WaiterOnly", "Waiter"));
+                        await _userManager.AddClaimAsync(applicationUser, new System.Security.Claims.Claim(ClaimTypes.NameIdentifier, applicationUser.Id));
+
                     }
                     else if (model.Role=="Chef")
                     {
                         await _userManager.AddClaimAsync(applicationUser, new System.Security.Claims.Claim("ChefOnly", "Chef"));
+                        await _userManager.AddClaimAsync(applicationUser, new System.Security.Claims.Claim(ClaimTypes.NameIdentifier, applicationUser.Id));
+
                     }
-                    
+
                     return Ok(result);
 
                 }
@@ -112,7 +116,7 @@ namespace ProjectRestaurantApi.Controllers
 
         [HttpPost]
         [Route("RegisterR")]
-        //POST : /api/ApplicationUser/Register
+        //POST : /api/ApplicationUser/RegisterR
         public async Task<Object> PostApplicationUserResto(ApplicationUserModel model)
         {
             var applicationUser = new ApplicationUser()
@@ -128,8 +132,9 @@ namespace ProjectRestaurantApi.Controllers
                 var result = await _userManager.CreateAsync(applicationUser, model.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddClaimAsync(applicationUser, new System.Security.Claims.Claim("ManagerOnly", "Mnager"));
-                    return Ok(result);
+                    await _userManager.AddClaimAsync(applicationUser, new System.Security.Claims.Claim("ManagerOnly", "Manager"));
+                    await _userManager.AddClaimAsync(applicationUser, new System.Security.Claims.Claim(ClaimTypes.NameIdentifier, applicationUser.Id));
+                    return Ok(applicationUser);
 
                 }
                 return Ok(result);
@@ -165,16 +170,7 @@ namespace ProjectRestaurantApi.Controllers
                 return Ok(new { token });
             }
             else
-                return BadRequest(new { message = "Username or password is incorrect." });
-        }
-        [Route("GetId")]
-        [HttpGet]
-        public async Task<IActionResult> GetId(string username)
-        {
-           var User = await _userManager.FindByNameAsync(username);
-           
-            var userid = User.Id;
-            return Ok(User);
+                return Ok(null);
         }
 
     }
